@@ -1,4 +1,4 @@
-package app.abstract_automaton_project;
+package app.abstract_automaton_project.console;
 
 import app.abstract_automaton_project.machines.MealyMachine;
 import app.abstract_automaton_project.machines.MoorMachine;
@@ -12,10 +12,37 @@ public class ConsoleApplication {
 
     private final static Scanner sc = new Scanner(System.in);
 
+    private static boolean isRunning = true;
+
     public static void main(String[] args) {
         System.out.print(GREETINGS);
 
         MachineProcessInterface machineProcess = createProcess();
+
+        ConsoleCommands.help();
+
+        while (isRunning) {
+            ConsoleCommands.printCurrentStage(machineProcess);
+
+            String nextCommand = sc.nextLine();
+            switch (nextCommand.replace(" ", "")) {
+                case "/show" -> ConsoleCommands.show(machineProcess);
+                case "/run" -> ConsoleCommands.run(machineProcess);
+                case "/step" -> ConsoleCommands.step(machineProcess);
+                case "/clear" -> ConsoleCommands.clear(machineProcess);
+                case "/help" -> ConsoleCommands.help();
+                case "/reset" -> {
+                    ConsoleCommands.reset();
+                    machineProcess = createProcess();
+                    ConsoleCommands.help();
+                }
+                case "/exit" -> {
+                    ConsoleCommands.exit();
+                    isRunning = false;
+                }
+                default -> ConsoleCommands.unknown();
+            }
+        }
     }
 
     private static MachineProcessInterface createProcess() {

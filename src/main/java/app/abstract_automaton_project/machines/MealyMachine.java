@@ -2,9 +2,8 @@ package app.abstract_automaton_project.machines;
 
 import app.abstract_automaton_project.exceptions.WrongMachineParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class MealyMachine extends Machine {
 
@@ -137,6 +136,160 @@ public class MealyMachine extends Machine {
         }
 
         return resultsMatrix;
+    }
+
+    @Override
+    public String getMachineNamePrint() {
+        return
+                """
+                
+                ╔════════════════════════════════════════════════════════════════╗
+                ║               ТЕКУЩАЯ КОНФИГУРАЦИЯ АВТОМАТА МИЛИ               ║
+                ╚════════════════════════════════════════════════════════════════╝
+                """;
+    }
+
+    @Override
+    public List<String> getResultsList() {
+        Set<String> results = new HashSet<>();
+        for (List<String> resultsRow: resultsMatrix) {
+            results.addAll(resultsRow);
+        }
+
+        return results.stream()
+                .sorted()
+                .toList();
+    }
+
+    @Override
+    public String getResultsPrint() {
+        int conditionMaxLen = Stream.concat(getConditions().stream(),
+                        getResultsList().stream())
+                .mapToInt(String::length)
+                .max()
+                .orElse(-4) + 4;
+
+        int transitionMaxLen = getTransitions().stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(-4) + 4;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("┌").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┬").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┐").append(System.lineSeparator());
+
+        int mainSymbolPadding = (transitionMaxLen - 1) / 2;
+        builder.append("│").append(" ".repeat(mainSymbolPadding))
+                .append("λ")
+                .append(" ".repeat(transitionMaxLen - 1 - mainSymbolPadding));
+
+        for (String condition: getConditions()) {
+            int conditionPadding = (conditionMaxLen - condition.length()) / 2;
+            builder.append("│").append(" ".repeat(conditionPadding))
+                    .append(condition)
+                    .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
+        }
+        builder.append("│").append(System.lineSeparator());
+
+        builder.append("├").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┼").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┤").append(System.lineSeparator());
+
+        for (int i = 0; i < getTransitions().size(); i++) {
+            String transition = getTransitions().get(i);
+            List<String> resultsRow = getResultsMatrix().get(i);
+
+            int transitionPadding = (transitionMaxLen - transition.length()) / 2;
+            builder.append("│").append(" ".repeat(transitionPadding))
+                    .append(transition)
+                    .append(" ".repeat(transitionMaxLen - transition.length() - transitionPadding));
+
+            for (String result: resultsRow) {
+                int conditionPadding = (conditionMaxLen - result.length()) / 2;
+                builder.append("│").append(" ".repeat(conditionPadding))
+                        .append(result)
+                        .append(" ".repeat(conditionMaxLen - result.length() - conditionPadding));
+            }
+            builder.append("│").append(System.lineSeparator());
+        }
+
+        builder.append("└").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┴").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┘").append(System.lineSeparator());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String getConditionsMatrixPrint() {
+        int conditionMaxLen = getConditions().stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(-4) + 4;
+
+        int transitionMaxLen = getTransitions().stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(-4) + 4;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("┌").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┬").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┐").append(System.lineSeparator());
+
+        int mainSymbolPadding = (transitionMaxLen - 1) / 2;
+        builder.append("│").append(" ".repeat(mainSymbolPadding))
+                .append("δ")
+                .append(" ".repeat(transitionMaxLen - 1 - mainSymbolPadding));
+
+        for (String condition: getConditions()) {
+            int conditionPadding = (conditionMaxLen - condition.length()) / 2;
+            builder.append("│").append(" ".repeat(conditionPadding))
+                    .append(condition)
+                    .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
+        }
+        builder.append("│").append(System.lineSeparator());
+
+        builder.append("├").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┼").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┤").append(System.lineSeparator());
+
+        for (int i = 0; i < getTransitions().size(); i++) {
+            String transition = getTransitions().get(i);
+            List<String> conditionsRow = getConditionsMatrix().get(i);
+
+            int transitionPadding = (transitionMaxLen - transition.length()) / 2;
+            builder.append("│").append(" ".repeat(transitionPadding))
+                    .append(transition)
+                    .append(" ".repeat(transitionMaxLen - transition.length() - transitionPadding));
+
+            for (String condition: conditionsRow) {
+                int conditionPadding = (conditionMaxLen - condition.length()) / 2;
+                builder.append("│").append(" ".repeat(conditionPadding))
+                        .append(condition)
+                        .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
+            }
+            builder.append("│").append(System.lineSeparator());
+        }
+
+        builder.append("└").append("─".repeat(transitionMaxLen));
+        for (int i = 0; i < getConditions().size(); i++) {
+            builder.append("┴").append("─".repeat(conditionMaxLen));
+        }
+        builder.append("┘").append(System.lineSeparator());
+
+        return builder.toString();
     }
 
     private static final String RESULTS_MATRIX_HINT =

@@ -1,12 +1,12 @@
 package app.abstract_automaton_project.processes;
 
+import app.abstract_automaton_project.machines.Machine;
+
 import java.util.List;
 
 public interface MachineProcessInterface {
 
     void step(String input);
-
-    void run(List<String> inputs);
 
     int getCurrentStep();
 
@@ -16,7 +16,15 @@ public interface MachineProcessInterface {
 
     String getLastConditionFromHistory();
 
+    List<String> getInputsHistory();
+
+    String getLastInput();
+
     List<String> getAllConditionsFromHistory();
 
     void clearProcess();
+
+    String getMachineName();
+
+    Machine getMachine();
 }

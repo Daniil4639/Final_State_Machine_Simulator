@@ -1,6 +1,7 @@
 package app.abstract_automaton_project.processes;
 
 import app.abstract_automaton_project.exceptions.WrongMachineParams;
+import app.abstract_automaton_project.machines.Machine;
 import app.abstract_automaton_project.machines.MoorMachine;
 
 import java.util.ArrayList;
@@ -14,12 +15,15 @@ public class MoorProcess implements MachineProcessInterface {
 
     private final List<String> conditionsHistory;
 
+    private final List<String> inputsHistory;
+
     private int currentStep;
 
     public MoorProcess(MoorMachine moorMachine) {
         this.moorMachine = moorMachine;
         this.results = new ArrayList<>();
         this.conditionsHistory = new ArrayList<>(List.of(moorMachine.getStartCondition()));
+        this.inputsHistory = new ArrayList<>();
         this.currentStep = 0;
     }
 
@@ -29,10 +33,10 @@ public class MoorProcess implements MachineProcessInterface {
         if (conditionIndex == -1) {
             throw new WrongMachineParams(String.format(
                     """
-                            Начальное состояние не найдено:
-                            %s
-                            Известные состояния:
-                            %s
+                    Текущее состояние не найдено:
+                    %s
+                    Известные состояния:
+                    %s
                     """,
                     getLastConditionFromHistory(),
                     moorMachine.getConditions()
@@ -43,32 +47,41 @@ public class MoorProcess implements MachineProcessInterface {
         if (transitionIndex == -1) {
             throw new WrongMachineParams(String.format(
                     """
-                            Заданное входное значение отсутствуют в списке входных сигналов:
-                            %s
-                            Известные входные сигналы:
-                            %s
+                    Заданное входное значение отсутствуют в списке входных сигналов:
+                    %s
+                    Известные входные сигналы:
+                    %s
                     """,
                     input,
                     moorMachine.getTransitions()
             ));
         }
 
-        String nextCondition = moorMachine.getConditionsMatrix()
-                .get(transitionIndex)
-                .get(conditionIndex);
+        String nextCondition = getNextCondition(input, transitionIndex, conditionIndex);
+
         String nestResult = moorMachine.getResults()
                 .get(conditionIndex);
 
         currentStep += 1;
         conditionsHistory.add(nextCondition);
         results.add(nestResult);
+        inputsHistory.add(input);
     }
 
-    @Override
-    public void run(List<String> inputs) {
-        for (String input: inputs) {
-            step(input);
+    private String getNextCondition(String input, int transitionIndex, int conditionIndex) {
+        String nextCondition = moorMachine.getConditionsMatrix()
+                .get(transitionIndex)
+                .get(conditionIndex);
+        if (nextCondition.equals("-")) {
+            throw new WrongMachineParams(String.format(
+                    """
+                    Заданный переход невозможен. Отсутствует дальнейшее состояние в матрице переходов.
+                    "%s" + "%s" -> "%s"
+                    """,
+                    getCurrentStep(), input, nextCondition
+            ));
         }
+        return nextCondition;
     }
 
     @Override
@@ -78,6 +91,10 @@ public class MoorProcess implements MachineProcessInterface {
 
     @Override
     public String getLastResult() {
+        if (results.isEmpty()) {
+            return "-";
+        }
+
         return results.get(results.size() - 1);
     }
 
@@ -97,10 +114,35 @@ public class MoorProcess implements MachineProcessInterface {
     }
 
     @Override
+    public List<String> getInputsHistory() {
+        return inputsHistory;
+    }
+
+    @Override
+    public String getLastInput() {
+        if (inputsHistory.isEmpty()) {
+            return "-";
+        }
+
+        return inputsHistory.get(inputsHistory.size() - 1);
+    }
+
+    @Override
     public void clearProcess() {
         results.clear();
         conditionsHistory.clear();
         conditionsHistory.add(moorMachine.getStartCondition());
+        inputsHistory.clear();
         currentStep = 0;
+    }
+
+    @Override
+    public String getMachineName() {
+        return "Автомат Мура";
+    }
+
+    @Override
+    public Machine getMachine() {
+        return moorMachine;
     }
 }

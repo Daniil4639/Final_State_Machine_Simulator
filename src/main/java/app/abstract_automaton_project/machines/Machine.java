@@ -2,10 +2,7 @@ package app.abstract_automaton_project.machines;
 
 import app.abstract_automaton_project.exceptions.WrongMachineParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,6 +170,20 @@ public abstract class Machine {
                     .toList();
 
             boolean ok = true;
+
+            Set<String> conditionsSet = new HashSet<>();
+            for (String condition: conditions) {
+                if (!conditionsSet.add(condition)) {
+                    System.out.println("В списке возможных состояний не должно быть повторяющихся элементов!");
+                    ok = false;
+                    break;
+                }
+            }
+
+            if (!ok) {
+                continue;
+            }
+
             for (String condition: conditions) {
                 if (isElementNotMatches(condition)) {
                     ok = false;
@@ -200,6 +211,20 @@ public abstract class Machine {
                     .toList();
 
             boolean ok = true;
+
+            Set<String> transitionsSet = new HashSet<>();
+            for (String transition: transitions) {
+                if (!transitionsSet.add(transition)) {
+                    System.out.println("В списке входных сигналов не должно быть повторяющихся элементов!");
+                    ok = false;
+                    break;
+                }
+            }
+
+            if (!ok) {
+                continue;
+            }
+
             for (String transition: transitions) {
                 if (isElementNotMatches(transition)) {
                     ok = false;
@@ -283,6 +308,14 @@ public abstract class Machine {
 
         return conditionsMatrix;
     }
+
+    public abstract String getMachineNamePrint();
+
+    public abstract List<String> getResultsList();
+
+    public abstract String getResultsPrint();
+
+    public abstract String getConditionsMatrixPrint();
 
     private static final String CONDITIONS_MATRIX_HINT =
             """
