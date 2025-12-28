@@ -39,6 +39,8 @@ public class VisualTransformer {
                 getProcessMatrix(process) + System.lineSeparator() +
                 "Входная последовательность: " + process.getInputsHistory() +
                 System.lineSeparator() +
+                "Последовательность состояний: " + process.getAllConditionsFromHistory() +
+                System.lineSeparator() +
                 "Выходная последовательность: " + process.getAllResults() +
                 System.lineSeparator() +
                 "Итоговое состояние: " + process.getLastConditionFromHistory() +

@@ -1,11 +1,17 @@
 package app.abstract_automaton_project.console;
 
+import app.abstract_automaton_project.exceptions.ReadMachineException;
 import app.abstract_automaton_project.machines.MealyMachine;
 import app.abstract_automaton_project.machines.MoorMachine;
 import app.abstract_automaton_project.processes.MachineProcessInterface;
 import app.abstract_automaton_project.processes.MealyProcess;
 import app.abstract_automaton_project.processes.MoorProcess;
+import app.abstract_automaton_project.utils.MachineFileTransformer;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleApplication {
@@ -27,8 +33,8 @@ public class ConsoleApplication {
             String nextCommand = sc.nextLine();
             switch (nextCommand.replace(" ", "")) {
                 case "/show" -> ConsoleCommands.show(machineProcess);
-                case "/run" -> ConsoleCommands.run(machineProcess);
                 case "/step" -> ConsoleCommands.step(machineProcess);
+                case "/run" -> ConsoleCommands.run(machineProcess);
                 case "/clear" -> ConsoleCommands.clear(machineProcess);
                 case "/help" -> ConsoleCommands.help();
                 case "/reset" -> {
@@ -36,6 +42,7 @@ public class ConsoleApplication {
                     machineProcess = createProcess();
                     ConsoleCommands.help();
                 }
+                case "/save" -> ConsoleCommands.save(machineProcess);
                 case "/exit" -> {
                     ConsoleCommands.exit();
                     isRunning = false;
@@ -46,20 +53,48 @@ public class ConsoleApplication {
     }
 
     private static MachineProcessInterface createProcess() {
-        int machineNum = getMachineNum();
+        while (true) {
+            int machineNum = getMachineNum();
 
-        System.out.printf(
-                """
-                
-                ---------------------------------------------------------------
-                
-                Выбран автомат %s
-                
-                Необходимо задать его параметры.
-                """
-                , (machineNum == 1) ? ("Мили") : ("Мура"));
+            if (machineNum == 3) {
+                System.out.print("\n---------------------------------------------------------------\n");
+                Path filePath = getFilePathToOpen();
 
-        return (machineNum == 1) ? (createMealyProcess()) : (createMoorProcess());
+                try {
+                    return MachineFileTransformer.getMachineFromFile(filePath);
+                } catch (ReadMachineException ex) {
+                    System.out.printf("Ошибка в процессе чтения состояния автомата: %s%n",
+                            ex.getMessage());
+                    continue;
+                }
+            }
+
+            System.out.printf(
+                    """
+                            
+                            ---------------------------------------------------------------
+                            
+                            Выбран автомат %s
+                            
+                            Необходимо задать его параметры.
+                            """
+                    , (machineNum == 1) ? ("Мили") : ("Мура"));
+
+            return (machineNum == 1) ? (createMealyProcess()) : (createMoorProcess());
+        }
+    }
+
+    private static Path getFilePathToOpen() {
+        while (true) {
+            System.out.println("Введите путь до файла с сохраненной конфигурацией автомата:");
+            Path filePath = Paths.get(sc.nextLine());
+            if (!Files.exists(filePath)) {
+                System.out.printf("%nФайл по пути \"%s\" не найден!%n", filePath);
+                continue;
+            }
+
+            return filePath;
+        }
     }
 
     private static MachineProcessInterface createMealyProcess() {
@@ -75,6 +110,19 @@ public class ConsoleApplication {
     }
 
     private static int getMachineNum() {
+        System.out.print(
+                """
+                
+                ---------------------------------------------------------------
+                
+                Выберите тип автомата для работы:
+                    [1] - Автомат Мили
+                    [2] - Автомат Мура
+                    [3] - Из файла
+                
+                Ваш выбор [1/2/3]:
+                """
+        );
         int machineNum;
 
         while (true) {
@@ -82,12 +130,12 @@ public class ConsoleApplication {
             try {
                 machineNum = Integer.parseInt(symbol);
             } catch (NumberFormatException ex) {
-                System.out.println("Не удалось распознать номер. Повторите [1/2]:");
+                System.out.println("Не удалось распознать номер. Повторите [1/2/3]:");
                 continue;
             }
 
-            if (machineNum != 1 && machineNum != 2) {
-                System.out.println("Введен некорректный номер. Повторите [1/2]:");
+            if (!List.of(1, 2, 3).contains(machineNum)) {
+                System.out.println("Введен некорректный номер. Повторите [1/2/3]:");
             } else {
                 break;
             }
@@ -104,13 +152,5 @@ public class ConsoleApplication {
                 ===============================================================
                 
                 Добро пожаловать в симулятор конечных автоматов!
-                
-                ---------------------------------------------------------------
-                
-                Выберите тип автомата для работы:
-                    [1] - Автомат Мили
-                    [2] - Автомат Мура
-                
-                Ваш выбор [1/2]:
                 """;
 }
