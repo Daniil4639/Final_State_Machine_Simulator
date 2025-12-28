@@ -1,5 +1,6 @@
-package app.abstract_automaton_project.console;
+package app.abstract_automaton_project;
 
+import app.abstract_automaton_project.console.ConsoleCommands;
 import app.abstract_automaton_project.exceptions.ReadMachineException;
 import app.abstract_automaton_project.machines.MealyMachine;
 import app.abstract_automaton_project.machines.MoorMachine;
