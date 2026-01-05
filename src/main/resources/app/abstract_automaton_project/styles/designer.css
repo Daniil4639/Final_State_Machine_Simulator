@@ -1,0 +1,471 @@
+/* designer.css - Стили для окна конструктора */
+
+/* Основные стили */
+.designer-root {
+    -fx-background-color: #121212;
+    -fx-padding: 0;
+}
+
+.center {
+    -fx-alignment: TOP_CENTER;
+}
+
+/* Разделитель */
+.main-split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.main-split-pane > .split-pane-divider {
+    -fx-background-color: #2d2d2d;
+    -fx-padding: 0 1px 0 1px;
+}
+
+/* Левая панель */
+.form-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-min-width: 400px;
+    -fx-max-width: 500px;
+}
+
+/* Скрыть границу ScrollPane */
+.form-scroll-pane, .form-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Стилизация скроллбара */
+.form-scroll-pane .scroll-bar:vertical,
+.form-scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+/* Трек (фон) скроллбара */
+.form-scroll-pane .scroll-bar:vertical .track,
+.form-scroll-pane .scroll-bar:horizontal .track {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+/* Ползунок (thumb) скроллбара */
+.form-scroll-pane .scroll-bar:vertical .thumb,
+.form-scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+}
+
+/* Ползунок при наведении */
+.form-scroll-pane .scroll-bar:vertical .thumb:hover,
+.form-scroll-pane .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #555;
+}
+
+/* Ползунок при нажатии */
+.form-scroll-pane .scroll-bar:vertical .thumb:pressed,
+.form-scroll-pane .scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #666;
+}
+
+/* Кнопки вверх/вниз (стрелки) */
+.form-scroll-pane .scroll-bar:vertical .increment-button,
+.form-scroll-pane .scroll-bar:vertical .decrement-button,
+.form-scroll-pane .scroll-bar:horizontal .increment-button,
+.form-scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 2px;
+    -fx-border-color: transparent;
+}
+
+/* Стрелки */
+.form-scroll-pane .scroll-bar .increment-arrow,
+.form-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: #666;
+    -fx-padding: 3px;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.form-scroll-pane .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.form-scroll-pane .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 4 L 4 0 L 8 4 Z"; /* треугольник вверх */
+}
+
+.form-scroll-pane .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 0 8 Z"; /* треугольник вправо */
+}
+
+.form-scroll-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 4 0 L 0 4 L 4 8 Z"; /* треугольник влево */
+}
+
+/* Стрелки при наведении */
+.form-scroll-pane .scroll-bar .increment-arrow:hover,
+.form-scroll-pane .scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #888;
+}
+
+/* Уголок (corner) */
+.form-scroll-pane .corner {
+    -fx-background-color: #1a1a1a;
+}
+
+.left-panel {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 20px;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* Секции формы */
+.form-section {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 15px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+}
+
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 0 0 8px 0;
+}
+
+/* Радиокнопки */
+.radio-button {
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 13px;
+}
+
+.radio-button .radio {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #444;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #2196F3;
+    -fx-border-color: #2196F3;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: white;
+}
+
+/* Список состояний */
+.editable-list {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #333;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-pref-height: 150px;
+    -fx-min-height: 100px;
+    -fx-max-height: 300px;
+}
+
+.editable-list .list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-background-color: #2d2d2d;
+    -fx-padding: 8px 12px;
+    -fx-border-color: transparent;
+}
+
+.editable-list .list-cell:filled:hover {
+    -fx-background-color: #3d3d3d;
+}
+
+.editable-list .list-cell:filled:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+/* Текстовые поля */
+.text-field {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+    -fx-border-color: #444;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused {
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2px;
+}
+
+/* Кнопки */
+.small-add-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+}
+
+.small-add-button:hover {
+    -fx-background-color: #66BB6A;
+}
+
+.secondary-button {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+}
+
+.primary-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 20px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: #42A5F5;
+}
+
+/* Комбобокс */
+.combo-box {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #444;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-background-color: #2d2d2d;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #444;
+}
+
+/* Таблицы */
+.main-tab-pane {
+    -fx-background-color: #1a1a1a;
+    -fx-tab-min-height: 40px;
+    -fx-tab-max-height: 40px;
+    -fx-pref-height: -1;
+    -fx-max-height: Infinity;
+}
+
+.data-tab {
+    -fx-background-color: #1a1a1a;
+}
+
+.main-tab-pane .tab-header-background {
+    -fx-background-color: #1e1e1e;
+}
+
+.main-tab-pane .tab {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: transparent;
+    -fx-pref-height: 40px;
+}
+
+.main-tab-pane .tab:selected {
+    -fx-background-color: #2196F3;
+}
+
+.main-tab-pane .tab .tab-label {
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 13px;
+}
+
+.main-tab-pane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-content {
+    -fx-padding: 15px;
+    -fx-background-color: #1a1a1a;
+}
+
+/* Контейнер таблицы с отступами */
+.table-container {
+    -fx-padding: 1px;
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.data-table {
+    -fx-background-color: #1e1e1e !important;
+    -fx-table-cell-border-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-table-header-border-color: transparent !important;
+}
+
+.data-table .scroll-pane,
+.data-table .scroll-pane .viewport {
+    -fx-background-color: #1e1e1e;
+}
+
+/* Заголовки столбцов */
+.data-table .column-header {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #333;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 12px;
+}
+
+.data-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.data-table .column-header-background {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #333;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Ячейки таблицы */
+.data-table .table-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #333;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+.data-table .table-row-cell {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #333;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #222;
+}
+
+.data-table .table-row-cell:filled:hover {
+    -fx-background-color: #2d2d2d;
+}
+
+.data-table .table-row-cell:filled:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.data-table:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.data-table .table-row-cell:filled:focused {
+    -fx-background-color: #2d2d2d;
+}
+
+.data-table .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.data-table .scroll-bar:vertical .track {
+    -fx-background-color: #1a1a1a;
+}
+
+.data-table .scroll-bar:vertical .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+}
+
+.data-table .column-header .filler {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #333;
+}
+
+/* Подсказки */
+.hint-text {
+    -fx-text-fill: #888;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+    -fx-padding: 5px 0 0 0;
+}
+
+.table-description {
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 13px;
+    -fx-padding: 10px 15px;
+    -fx-background-color: #2d2d2d;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* Нижняя панель статуса */
+.status-bar {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 0px 20px;
+}
+
+.status-text {
+    -fx-text-fill: #888;
+    -fx-font-size: 12px;
+}
+
+/* Таблица выходов Мура (специфичная) */
+#mooreOutputTable .table-cell {
+    -fx-alignment: CENTER;
+}
+
+#mooreOutputTable .table-column {
+    -fx-alignment: CENTER;
+}
+
+.context-menu {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #444;
+    -fx-border-width: 1px;
+    -fx-padding: 5px 0;
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 8px 20px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #3d3d3d;
+}

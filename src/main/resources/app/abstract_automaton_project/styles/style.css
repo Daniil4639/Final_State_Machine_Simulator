@@ -1,0 +1,121 @@
+.root {
+    -fx-background-color: #121212;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 12px 16px;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.app-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-border-radius: 4px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+}
+
+.nav-button.active {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.compact-menu {
+    -fx-background-color: transparent;
+}
+
+.compact-menu .menu-button:hover,
+.compact-menu .menu-button:showing {
+    -fx-background-color: #2d2d2d;
+}
+
+.content-area {
+    -fx-background-color: #121212;
+}
+
+.right-toolbar {
+    -fx-padding: 0;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-cursor: hand;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.menu-button .label {
+    -fx-text-fill: white;
+}
+
+.menu-button .arrow {
+    -fx-background-color: #e0e0e0;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white !important;
+}
+
+.menu-button:showing {
+    -fx-background-color: #2d2d2d;
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8px 15px;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+}
+
+.menu-item:hover {
+    -fx-background-color: #3d3d3d;
+}
+
+.menu-item:hover .label {
+    -fx-text-fill: white;
+}
+
+.about-button {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.about-button:hover {
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+}
+
+.about-button:pressed {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}

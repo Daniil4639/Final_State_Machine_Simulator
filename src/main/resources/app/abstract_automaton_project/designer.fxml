@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="app.abstract_automaton_project.controllers.DesignerController" styleClass="designer-root">
+
+    <stylesheets>
+        <URL value="@styles/designer.css" />
+    </stylesheets>
+
+    <!-- Основное содержимое -->
+    <center>
+        <SplitPane dividerPositions="0.35" styleClass="main-split-pane">
+
+            <!-- ЛЕВАЯ ПАНЕЛЬ: Форма ввода данных -->
+            <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="form-scroll-pane" hbarPolicy="NEVER">
+                <VBox styleClass="left-panel" spacing="20">
+
+                    <!-- Выбор типа автомата -->
+                    <VBox styleClass="form-section" spacing="10">
+                        <Label text="Тип автомата" styleClass="section-title"/>
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <RadioButton text="Автомат Мили" fx:id="mealyRadio"
+                                         selected="true" onAction="#onAutomatonTypeChanged">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="automatonTypeGroup"/>
+                                </toggleGroup>
+                            </RadioButton>
+                            <RadioButton text="Автомат Мура" fx:id="moorRadio"
+                                         toggleGroup="$automatonTypeGroup" onAction="#onAutomatonTypeChanged"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- 1. Состояния -->
+                    <VBox styleClass="form-section" spacing="10">
+                        <Label text="Состояния" styleClass="section-title"/>
+                        <ListView fx:id="statesListView" styleClass="editable-list"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="newStateField" promptText="Новое состояние"
+                                       HBox.hgrow="ALWAYS" onAction="#addState"/>
+                            <Button text="Добавить" styleClass="secondary-button" onAction="#addState"/>
+                        </HBox>
+                        <Label text="Можно вводить несколько через запятую: a0,a1,a2" styleClass="hint-text"/>
+                        <Label text="Допустимые символы: a-z A-Z 0-9 _ ," styleClass="hint-text"/>
+                    </VBox>
+
+                    <!-- 2. Входные символы -->
+                    <VBox styleClass="form-section" spacing="10">
+                        <Label text="Входные сигналы" styleClass="section-title"/>
+                        <ListView fx:id="inputsListView" styleClass="editable-list"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="inputsField" promptText="Новый входной сигнал"
+                                       HBox.hgrow="ALWAYS" onAction="#parseInputs"/>
+                            <Button text="Добавить" styleClass="secondary-button" onAction="#parseInputs"/>
+                        </HBox>
+                        <Label text="Можно вводить несколько через запятую: x0,x1,x2" styleClass="hint-text"/>
+                        <Label text="Допустимые символы: a-z A-Z 0-9 _ ," styleClass="hint-text"/>
+                    </VBox>
+
+                    <!-- 3. Выходные символы (для Мура) -->
+                    <VBox fx:id="mooreOutputSection" styleClass="form-section" visible="false" managed="false"
+                          spacing="10">
+                        <Label text="Выходные символы" styleClass="section-title"/>
+                        <ListView fx:id="outputsListView" styleClass="editable-list"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="outputsField" promptText="Новый выходной сигнал"
+                                       HBox.hgrow="ALWAYS" onAction="#parseOutputs"/>
+                            <Button text="Добавить" styleClass="secondary-button" onAction="#parseOutputs"/>
+                        </HBox>
+                        <Label text="Можно вводить несколько через запятую: y0,y1,y2" styleClass="hint-text"/>
+                        <Label text="Допустимые символы: a-z A-Z 0-9 _ , -" styleClass="hint-text"/>
+                        <Label text="Если выходной сигнал отсутствует, используйте: -" styleClass="hint-text"/>
+                    </VBox>
+
+                    <!-- 4. Начальное состояние -->
+                    <VBox styleClass="form-section" spacing="10">
+                        <Label text="Начальное состояние" styleClass="section-title"/>
+                        <ComboBox fx:id="initialStateCombo" promptText="Выберите состояние"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <!-- ПРАВАЯ ПАНЕЛЬ: Табличное редактирование -->
+            <TabPane styleClass="main-tab-pane" tabClosingPolicy="UNAVAILABLE">
+
+                <!-- Таблица переходов -->
+                <Tab text="Таблица переходов" styleClass="data-tab">
+                    <VBox spacing="10" styleClass="tab-content">
+                        <Label text="Укажите целевое состояние для каждого перехода"
+                               styleClass="table-description"/>
+
+                        <VBox styleClass="table-container">
+                            <TableView fx:id="transitionTable" styleClass="data-table">
+                            </TableView>
+                        </VBox>
+
+                        <Label text="Для изменения кликните дважды по ячейке" styleClass="hint-text"/>
+                        <Label text="Допустимые символы: a-z A-Z 0-9 _ -" styleClass="hint-text"/>
+                    </VBox>
+                </Tab>
+
+                <!-- Таблица выходов (для Мили) -->
+                <Tab fx:id="mealyOutputTab" text="Таблица выходов (Мили)" styleClass="data-tab">
+                    <VBox spacing="10" styleClass="tab-content">
+                        <Label text="Укажите выходной сигнал для каждого перехода"
+                               styleClass="table-description"/>
+
+                        <VBox styleClass="table-container">
+                            <TableView fx:id="outputTable" styleClass="data-table">
+                            </TableView>
+                        </VBox>
+
+                        <Label text="Для изменения кликните дважды по ячейке" styleClass="hint-text"/>
+                        <Label text="Допустимые символы: a-z A-Z 0-9 _ -" styleClass="hint-text"/>
+                    </VBox>
+                </Tab>
+
+            </TabPane>
+
+        </SplitPane>
+    </center>
+
+    <!-- Нижняя панель: статус и действия -->
+    <bottom>
+        <BorderPane styleClass="status-bar" prefHeight="50" maxHeight="50" minHeight="50">
+            <left>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="statusLabel" text="Не готов к работе" styleClass="status-text"/>
+                </HBox>
+            </left>
+            <right>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Button text="Очистить" styleClass="secondary-button"
+                            onAction="#refreshAll"/>
+                    <Button text="Проверить корректность" styleClass="secondary-button"
+                            onAction="#validateAutomaton"/>
+                    <Button text="Перейти к симулятору" styleClass="primary-button"
+                            onAction="#goToSimulator"/>
+                </HBox>
+            </right>
+        </BorderPane>
+    </bottom>
+
+</BorderPane>

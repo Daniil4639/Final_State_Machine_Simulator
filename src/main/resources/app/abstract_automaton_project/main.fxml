@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="app.abstract_automaton_project.controllers.MainController">
+    <stylesheets>
+        <URL value="@styles/style.css" />
+    </stylesheets>
+
+    <BorderPane styleClass="header" prefHeight="60">
+        <left>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+
+                <Label text="FSMS" styleClass="app-title"/>
+                <Separator orientation="VERTICAL" styleClass="header-separator"/>
+
+                <Button fx:id="designerNavButton" text="Конструктор" styleClass="nav-button" onAction="#switchToDesigner"/>
+                <Button fx:id="simulatorNavButton" text="Симулятор" styleClass="nav-button" onAction="#switchToSimulator"/>
+            </HBox>
+        </left>
+        <center/>
+        <right>
+            <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="right-toolbar">
+                <MenuButton text="Файл" styleClass="menu-button">
+                    <items>
+                        <MenuItem styleClass="menu-item" text="Новый автомат"/>
+                        <MenuItem styleClass="menu-item" text="Открыть..."/>
+                        <MenuItem styleClass="menu-item" text="Сохранить"/>
+                        <SeparatorMenuItem />
+                        <MenuItem styleClass="menu-item" text="Выход"/>
+                    </items>
+                </MenuButton>
+
+                <Button text="О программе" styleClass="about-button" onAction="#showAboutDialog" />
+            </HBox>
+        </right>
+        <padding>
+            <Insets left="20" right="20" />
+        </padding>
+    </BorderPane>
+
+    <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS" styleClass="content-area">
+        <fx:include fx:id="designerPane" source="designer.fxml" visible="true"/>
+        <fx:include fx:id="simulatorPane" source="simulator.fxml" visible="false"/>
+    </StackPane>
+
+</VBox>
