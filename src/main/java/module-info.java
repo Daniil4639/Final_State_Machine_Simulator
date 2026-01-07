@@ -3,6 +3,7 @@ module app.abstract_automaton_project {
     requires javafx.fxml;
     requires java.desktop;
     requires org.controlsfx.controls;
+    requires java.prefs;
 
 
     opens app.abstract_automaton_project to javafx.fxml;

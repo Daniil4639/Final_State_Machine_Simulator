@@ -1,6 +1,5 @@
 package app.abstract_automaton_project.utils;
 
-import app.abstract_automaton_project.machines.Machine;
 import app.abstract_automaton_project.processes.MachineProcessInterface;
 
 import java.util.ArrayList;
@@ -8,26 +7,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class VisualTransformer {
-
-    public static String getMachineDescription(Machine machine) {
-        String printStr = machine.getMachineNamePrint() + System.lineSeparator() +
-                "СОСТОЯНИЯ:           " + machine.getConditions() + System.lineSeparator() +
-                "ВХОДНОЙ АЛФАВИТ:     " + machine.getTransitions() + System.lineSeparator() +
-                "ВЫХОДНОЙ АЛФАВИТ:    " + machine.getResultsList() + System.lineSeparator() +
-                "НАЧАЛЬНОЕ СОСТОЯНИЕ: " + machine.getStartCondition() +
-                System.lineSeparator() + System.lineSeparator() +
-                "ТАБЛИЦА ПЕРЕХОДОВ:" + System.lineSeparator() +
-                machine.getConditionsMatrixPrint() +
-                System.lineSeparator();
-
-        String results = machine.getResultsPrint();
-        if (!results.isEmpty()) {
-            return printStr + "ТАБЛИЦА ВЫХОДОВ:" + System.lineSeparator() +
-                    machine.getResultsPrint();
-        }
-
-        return printStr;
-    }
 
     public static String getResultsDescription(MachineProcessInterface process) {
         return "══════════════════════════════════════════════════════" +

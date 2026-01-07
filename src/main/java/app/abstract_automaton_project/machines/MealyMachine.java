@@ -3,7 +3,6 @@ package app.abstract_automaton_project.machines;
 import app.abstract_automaton_project.exceptions.WrongMachineParams;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class MealyMachine extends Machine {
 
@@ -20,6 +19,8 @@ public class MealyMachine extends Machine {
                           List<String> transitions,
                           String startCondition) {
 
+        checkConditionsList(conditions);
+        checkInputsList(transitions);
         checkConditionsMatrix(conditionsMatrix, conditions, transitions);
         checkResultsMatrix(resultsMatrix, conditions, transitions);
         checkStartCondition(conditions, startCondition);
@@ -63,259 +64,22 @@ public class MealyMachine extends Machine {
                         transitions.size()
                 ));
             }
-        }
-    }
-
-    public static MealyMachine createMealyMachineConsole() {
-        List<String> conditions = createConditionsConsole();
-        List<String> transitions = createTransitionsConsole();
-
-        List<List<String>> conditionsMatrix = createConditionsMatrixConsole(conditions, transitions);
-        List<List<String>> resultsMatrix = createResultsMatrixConsole(conditions, transitions);
-
-        String startCondition = createStartConditionConsole(conditions);
-
-        MealyMachine mealyMachine = new MealyMachine();
-        mealyMachine.setParams(
-                conditionsMatrix,
-                resultsMatrix,
-                conditions,
-                transitions,
-                startCondition
-        );
-
-        return mealyMachine;
-    }
-
-    private static List<List<String>> createResultsMatrixConsole(List<String> conditions,
-                                                                 List<String> transitions) {
-
-        List<List<String>> resultsMatrix = new ArrayList<>();
-        System.out.printf(RESULTS_MATRIX_HINT, conditions.size(), transitions.size());
-
-        for (int ind = 0; ind < transitions.size(); ind++) {
-            List<String> resultsRow;
-
-            while (true) {
-                resultsRow = Arrays.stream(sc.nextLine()
-                                .replace(" ", "")
-                                .split(","))
-                        .toList();
-
-                boolean ok = true;
-
-                if (resultsRow.size() != conditions.size()) {
-                    System.out.printf(
-                            """
-                            Размер введенной строки: %d. Ожидаемый размер: %d.
-                            Введите строку матрицы повторно:
-                            """,
-                            resultsRow.size(), conditions.size()
-                    );
-                    continue;
-                }
-
-                for (String result: resultsRow) {
-                    if (result.equals("-")) {
-                        continue;
-                    }
-
-                    if (isElementNotMatches(result)) {
-                        System.out.println("Введите строку матрицы повторно:");
-                        ok = false;
-                        break;
-                    }
-                }
-
-                if (ok) {
-                    break;
-                }
-            }
-
-            resultsMatrix.add(resultsRow);
-        }
-
-        return resultsMatrix;
-    }
-
-    @Override
-    public String getMachineNamePrint() {
-        return
-                """
-                
-                ╔════════════════════════════════════════════════════════════════╗
-                ║               ТЕКУЩАЯ КОНФИГУРАЦИЯ АВТОМАТА МИЛИ               ║
-                ╚════════════════════════════════════════════════════════════════╝
-                """;
-    }
-
-    @Override
-    public List<String> getResultsList() {
-        Set<String> results = new HashSet<>();
-        for (List<String> resultsRow: resultsMatrix) {
-            results.addAll(resultsRow);
-        }
-
-        return results.stream()
-                .sorted()
-                .toList();
-    }
-
-    @Override
-    public String getResultsPrint() {
-        int conditionMaxLen = Stream.concat(getConditions().stream(),
-                        getResultsList().stream())
-                .mapToInt(String::length)
-                .max()
-                .orElse(-4) + 4;
-
-        int transitionMaxLen = getTransitions().stream()
-                .mapToInt(String::length)
-                .max()
-                .orElse(-4) + 4;
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("┌").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┬").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┐").append(System.lineSeparator());
-
-        int mainSymbolPadding = (transitionMaxLen - 1) / 2;
-        builder.append("│").append(" ".repeat(mainSymbolPadding))
-                .append("λ")
-                .append(" ".repeat(transitionMaxLen - 1 - mainSymbolPadding));
-
-        for (String condition: getConditions()) {
-            int conditionPadding = (conditionMaxLen - condition.length()) / 2;
-            builder.append("│").append(" ".repeat(conditionPadding))
-                    .append(condition)
-                    .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
-        }
-        builder.append("│").append(System.lineSeparator());
-
-        builder.append("├").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┼").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┤").append(System.lineSeparator());
-
-        for (int i = 0; i < getTransitions().size(); i++) {
-            String transition = getTransitions().get(i);
-            List<String> resultsRow = getResultsMatrix().get(i);
-
-            int transitionPadding = (transitionMaxLen - transition.length()) / 2;
-            builder.append("│").append(" ".repeat(transitionPadding))
-                    .append(transition)
-                    .append(" ".repeat(transitionMaxLen - transition.length() - transitionPadding));
 
             for (String result: resultsRow) {
-                int conditionPadding = (conditionMaxLen - result.length()) / 2;
-                builder.append("│").append(" ".repeat(conditionPadding))
-                        .append(result)
-                        .append(" ".repeat(conditionMaxLen - result.length() - conditionPadding));
+                if (result.isEmpty()) {
+                    throw new WrongMachineParams("Выходной сигнал не может быть пустым!");
+                }
+
+                if (!result.equals("-") && !NAME_PATTERN.matcher(result).matches()) {
+                    throw new WrongMachineParams(String.format(
+                            """
+                            Выходной сигнал "%s" не соответствует формату ввода.
+                            Допустимые символы: a-z A-Z 0-9 _
+                            """,
+                            result
+                    ));
+                }
             }
-            builder.append("│").append(System.lineSeparator());
         }
-
-        builder.append("└").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┴").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┘").append(System.lineSeparator());
-
-        return builder.toString();
     }
-
-    @Override
-    public String getConditionsMatrixPrint() {
-        int conditionMaxLen = getConditions().stream()
-                .mapToInt(String::length)
-                .max()
-                .orElse(-4) + 4;
-
-        int transitionMaxLen = getTransitions().stream()
-                .mapToInt(String::length)
-                .max()
-                .orElse(-4) + 4;
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("┌").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┬").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┐").append(System.lineSeparator());
-
-        int mainSymbolPadding = (transitionMaxLen - 1) / 2;
-        builder.append("│").append(" ".repeat(mainSymbolPadding))
-                .append("δ")
-                .append(" ".repeat(transitionMaxLen - 1 - mainSymbolPadding));
-
-        for (String condition: getConditions()) {
-            int conditionPadding = (conditionMaxLen - condition.length()) / 2;
-            builder.append("│").append(" ".repeat(conditionPadding))
-                    .append(condition)
-                    .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
-        }
-        builder.append("│").append(System.lineSeparator());
-
-        builder.append("├").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┼").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┤").append(System.lineSeparator());
-
-        for (int i = 0; i < getTransitions().size(); i++) {
-            String transition = getTransitions().get(i);
-            List<String> conditionsRow = getConditionsMatrix().get(i);
-
-            int transitionPadding = (transitionMaxLen - transition.length()) / 2;
-            builder.append("│").append(" ".repeat(transitionPadding))
-                    .append(transition)
-                    .append(" ".repeat(transitionMaxLen - transition.length() - transitionPadding));
-
-            for (String condition: conditionsRow) {
-                int conditionPadding = (conditionMaxLen - condition.length()) / 2;
-                builder.append("│").append(" ".repeat(conditionPadding))
-                        .append(condition)
-                        .append(" ".repeat(conditionMaxLen - condition.length() - conditionPadding));
-            }
-            builder.append("│").append(System.lineSeparator());
-        }
-
-        builder.append("└").append("─".repeat(transitionMaxLen));
-        for (int i = 0; i < getConditions().size(); i++) {
-            builder.append("┴").append("─".repeat(conditionMaxLen));
-        }
-        builder.append("┘").append(System.lineSeparator());
-
-        return builder.toString();
-    }
-
-    private static final String RESULTS_MATRIX_HINT =
-            """
-            
-            ---------------------------------------------------------------
-            
-            Заполнение матрицы выходных сигналов!
-            Для каждого состояния и входного значения необходимо указать следующее сигналы!
-            Использовать '-' в случае отсутствия сигнала!
-            
-            Пример матрицы выходных сигналов:
-            
-                       │     q0     │     q1     │     q2     │
-              ─────────┼────────────┼────────────┼────────────┼
-                  x1   │     y0     │     y1     │     y2     │
-                  x2   │     y3     │     y4     │     y5     │
-            
-            Пример ожидаемого ввода:
-            > y0,y1,y2
-            > y3,y4,y5
-            
-            Ожидаемый размер вводимой матрицы на основе введенных ранее состояний и входных сигналов:
-            Ширина - %s
-            Высота - %s
-            
-            Ввод матрицы:
-            """;
 }

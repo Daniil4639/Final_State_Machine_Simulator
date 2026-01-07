@@ -17,14 +17,11 @@ public class MoorProcess implements MachineProcessInterface {
 
     private final List<String> inputsHistory;
 
-    private int currentStep;
-
     public MoorProcess(MoorMachine moorMachine) {
         this.moorMachine = moorMachine;
         this.results = new ArrayList<>();
         this.conditionsHistory = new ArrayList<>(List.of(moorMachine.getStartCondition()));
         this.inputsHistory = new ArrayList<>();
-        this.currentStep = 0;
     }
 
     @Override
@@ -62,7 +59,6 @@ public class MoorProcess implements MachineProcessInterface {
         String nestResult = moorMachine.getResults()
                 .get(conditionIndex);
 
-        currentStep += 1;
         conditionsHistory.add(nextCondition);
         results.add(nestResult);
         inputsHistory.add(input);
@@ -78,15 +74,10 @@ public class MoorProcess implements MachineProcessInterface {
                     Заданный переход невозможен. Отсутствует дальнейшее состояние в матрице переходов.
                     "%s" + "%s" -> "%s"
                     """,
-                    getCurrentStep(), input, nextCondition
+                    moorMachine.getConditions().get(conditionIndex), input, nextCondition
             ));
         }
         return nextCondition;
-    }
-
-    @Override
-    public int getCurrentStep() {
-        return currentStep;
     }
 
     @Override
@@ -133,7 +124,6 @@ public class MoorProcess implements MachineProcessInterface {
         conditionsHistory.clear();
         conditionsHistory.add(moorMachine.getStartCondition());
         inputsHistory.clear();
-        currentStep = 0;
     }
 
     @Override

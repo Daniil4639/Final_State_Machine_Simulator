@@ -362,7 +362,6 @@
 .data-table .table-cell {
     -fx-text-fill: #e0e0e0;
     -fx-border-color: #333;
-    -fx-border-width: 0 0 1px 0;
     -fx-padding: 8px 12px;
     -fx-font-size: 13px;
     -fx-alignment: CENTER;
@@ -370,7 +369,6 @@
 
 .data-table .table-row-cell {
     -fx-background-color: #1e1e1e;
-    -fx-border-color: transparent;
     -fx-table-cell-border-color: #333;
 }
 
@@ -407,11 +405,6 @@
 .data-table .scroll-bar:vertical .thumb {
     -fx-background-color: #444;
     -fx-background-radius: 4px;
-}
-
-.data-table .column-header .filler {
-    -fx-background-color: #2d2d2d;
-    -fx-border-color: #333;
 }
 
 /* Подсказки */
@@ -468,4 +461,207 @@
 
 .menu-item:hover {
     -fx-background-color: #3d3d3d;
+}
+
+/* Табличная панель */
+.table-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Скрыть границу ScrollPane */
+.table-scroll-pane, .table-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Стилизация скроллбара */
+.table-scroll-pane .scroll-bar:vertical,
+.table-scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+/* Трек (фон) скроллбара */
+.table-scroll-pane .scroll-bar:vertical .track,
+.table-scroll-pane .scroll-bar:horizontal .track {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+/* Ползунок (thumb) скроллбара */
+.table-scroll-pane .scroll-bar:vertical .thumb,
+.table-scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+}
+
+/* Ползунок при наведении */
+.table-scroll-pane .scroll-bar:vertical .thumb:hover,
+.table-scroll-pane .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #555;
+}
+
+/* Ползунок при нажатии */
+.table-scroll-pane .scroll-bar:vertical .thumb:pressed,
+.table-scroll-pane .scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #666;
+}
+
+/* Кнопки вверх/вниз (стрелки) */
+.table-scroll-pane .scroll-bar:vertical .increment-button,
+.table-scroll-pane .scroll-bar:vertical .decrement-button,
+.table-scroll-pane .scroll-bar:horizontal .increment-button,
+.table-scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 2px;
+    -fx-border-color: transparent;
+}
+
+/* Стрелки */
+.table-scroll-pane .scroll-bar .increment-arrow,
+.table-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: #666;
+    -fx-padding: 3px;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.table-scroll-pane .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.table-scroll-pane .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 4 L 4 0 L 8 4 Z"; /* треугольник вверх */
+}
+
+.table-scroll-pane .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 0 8 Z"; /* треугольник вправо */
+}
+
+.table-scroll-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 4 0 L 0 4 L 4 8 Z"; /* треугольник влево */
+}
+
+/* Стрелки при наведении */
+.table-scroll-pane .scroll-bar .increment-arrow:hover,
+.table-scroll-pane .scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #888;
+}
+
+/* Уголок (corner) */
+.table-scroll-pane .corner {
+    -fx-background-color: #1a1a1a;
+}
+
+/* Общая панель */
+.tab-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Скрыть границу ScrollPane */
+.tab-scroll-pane, .tab-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Стилизация скроллбара */
+.tab-scroll-pane .scroll-bar:vertical,
+.tab-scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+/* Трек (фон) скроллбара */
+.tab-scroll-pane .scroll-bar:vertical .track,
+.tab-scroll-pane .scroll-bar:horizontal .track {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+/* Ползунок (thumb) скроллбара */
+.tab-scroll-pane .scroll-bar:vertical .thumb,
+.tab-scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+}
+
+/* Ползунок при наведении */
+.tab-scroll-pane .scroll-bar:vertical .thumb:hover,
+.tab-scroll-pane .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #555;
+}
+
+/* Ползунок при нажатии */
+.tab-scroll-pane .scroll-bar:vertical .thumb:pressed,
+.tab-scroll-pane .scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #666;
+}
+
+/* Кнопки вверх/вниз (стрелки) */
+.tab-scroll-pane .scroll-bar:vertical .increment-button,
+.tab-scroll-pane .scroll-bar:vertical .decrement-button,
+.tab-scroll-pane .scroll-bar:horizontal .increment-button,
+.tab-scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 2px;
+    -fx-border-color: transparent;
+}
+
+/* Стрелки */
+.tab-scroll-pane .scroll-bar .increment-arrow,
+.tab-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: #666;
+    -fx-padding: 3px;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.tab-scroll-pane .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.tab-scroll-pane .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 4 L 4 0 L 8 4 Z"; /* треугольник вверх */
+}
+
+.tab-scroll-pane .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 0 8 Z"; /* треугольник вправо */
+}
+
+.tab-scroll-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 4 0 L 0 4 L 4 8 Z"; /* треугольник влево */
+}
+
+/* Стрелки при наведении */
+.tab-scroll-pane .scroll-bar .increment-arrow:hover,
+.tab-scroll-pane .scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #888;
+}
+
+/* Уголок (corner) */
+.tab-scroll-pane .corner {
+    -fx-background-color: #1a1a1a;
+}
+
+.data-table .column-header .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+    visibility: hidden;
 }

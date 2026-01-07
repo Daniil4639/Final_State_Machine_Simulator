@@ -6,8 +6,6 @@ import app.abstract_automaton_project.machines.Machine;
 import app.abstract_automaton_project.machines.MealyMachine;
 import app.abstract_automaton_project.machines.MoorMachine;
 import app.abstract_automaton_project.processes.MachineProcessInterface;
-import app.abstract_automaton_project.processes.MealyProcess;
-import app.abstract_automaton_project.processes.MoorProcess;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +23,7 @@ public class MachineFileTransformer {
         save(filepath, VisualTransformer.getResultsDescription(process));
     }
 
-    public static MachineProcessInterface getMachineFromFile(Path filePath) {
+    public static Machine getMachineFromFile(Path filePath) {
         String data = readData(filePath);
 
         Map<String, String> params = Arrays.stream(data.split(";"))
@@ -66,7 +64,7 @@ public class MachineFileTransformer {
                     startCondition
             );
 
-            return new MealyProcess(machine);
+            return machine;
         } else {
             List<String> results = extractResultsList(params, conditions.size());
 
@@ -77,7 +75,7 @@ public class MachineFileTransformer {
                     startCondition
             );
 
-            return new MoorProcess(machine);
+            return machine;
         }
     }
 

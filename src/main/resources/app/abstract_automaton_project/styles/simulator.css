@@ -1,0 +1,540 @@
+/* simulator.css - Стили для окна симулятора */
+
+/* Основные стили */
+.simulator-root {
+    -fx-background-color: #121212;
+    -fx-padding: 0;
+}
+
+/* Верхняя панель управления */
+.control-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 20px;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Информация об автомате */
+.automaton-info {
+    -fx-padding: 0 0 15px 0;
+    -fx-border-color: #333;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.info-label {
+    -fx-text-fill: #888;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+}
+
+.info-value {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.info-value.current-state {
+    -fx-text-fill: #4CAF50;
+    -fx-font-size: 16px;
+}
+
+/* Секция ввода */
+.input-section {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 15px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+}
+
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e0e0;
+}
+
+.sequence-input {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+    -fx-border-color: #444;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 10px 12px;
+    -fx-font-size: 14px;
+}
+
+.sequence-input:focused {
+    -fx-border-color: #2196F3;
+    -fx-border-width: 2px;
+}
+
+/* Основной контент */
+.main-content {
+    -fx-padding: 20px;
+    -fx-background-color: #121212;
+}
+
+/* Управление симуляцией */
+.simulation-controls {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+}
+
+.control-button {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-min-width: 100px;
+}
+
+.control-button:hover {
+    -fx-background-color: #3d3d3d;
+}
+
+.control-button.primary {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.control-button.primary:hover {
+    -fx-background-color: #42A5F5;
+}
+
+.control-button.success {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.control-button.success:hover {
+    -fx-background-color: #66BB6A;
+}
+
+.control-button.warning {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+}
+
+.control-button.warning:hover {
+    -fx-background-color: #FFB74D;
+}
+
+.control-button.danger {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+}
+
+.control-button.danger:hover {
+    -fx-background-color: #EF5350;
+}
+
+.control-label {
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 12px;
+}
+
+.speed-slider {
+    -fx-pref-width: 200px;
+}
+
+.speed-slider .track {
+    -fx-background-color: #2d2d2d;
+    -fx-background-radius: 2px;
+}
+
+.speed-slider .thumb {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 10px;
+}
+
+.speed-slider .axis {
+    -fx-tick-label-fill: #888;
+}
+
+/* Разделитель */
+.vertical-separator {
+    -fx-padding: 0 15px;
+}
+
+.vertical-separator .line {
+    -fx-border-color: #333;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* Секция результатов */
+.results-section {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 20px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+}
+
+/* Таблица результатов */
+.results-table {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #333;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 1px;
+}
+
+.results-table .column-header {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-border-color: #333;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 10px;
+}
+
+.results-table .column-header-background {
+    -fx-background-color: #2d2d2d;
+}
+
+.results-table .table-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #333;
+    -fx-padding: 10px;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+.results-table .table-row-cell {
+    -fx-background-color: #1e1e1e;
+}
+
+.results-table .table-row-cell:odd {
+    -fx-background-color: #222;
+}
+
+.results-table .table-row-cell:filled:hover {
+    -fx-background-color: #2d2d2d;
+}
+
+.results-table .table-row-cell:filled:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+/* Специальные стили для столбцов */
+.step-column {
+    -fx-alignment: CENTER;
+}
+
+.state-column {
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+}
+
+.state-column .table-cell {
+    -fx-text-fill: #4CAF50;
+}
+
+.input-column {
+    -fx-alignment: CENTER;
+}
+
+.input-column .table-cell {
+    -fx-text-fill: #2196F3;
+}
+
+.output-column {
+    -fx-alignment: CENTER;
+}
+
+.output-column .table-cell {
+    -fx-text-fill: #FF9800;
+}
+
+.description-column {
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Визуальная трассировка */
+.trace-section {
+    -fx-padding: 15px;
+    -fx-background-color: #1e1e1e;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+}
+
+.trace-container {
+    -fx-padding: 10px;
+    -fx-background-color: #2d2d2d;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-min-height: 60px;
+}
+
+.trace-step {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.trace-step:hover {
+    -fx-background-color: #42A5F5;
+}
+
+.trace-step.current {
+    -fx-background-color: #4CAF50;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.5), 10, 0, 0, 0);
+}
+
+.trace-step.error {
+    -fx-background-color: #F44336;
+}
+
+.trace-step.visited {
+    -fx-background-color: #FF9800;
+}
+
+/* Нижняя панель статуса */
+.status-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #2d2d2d;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.status-text {
+    -fx-text-fill: #888;
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+}
+
+.stat-label {
+    -fx-text-fill: #888;
+    -fx-font-size: 11px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.stat-value {
+    -fx-text-fill: #888;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* Стили для сообщений в таблице */
+.success-row .table-cell {
+    -fx-text-fill: #4CAF50 !important;
+}
+
+.error-row .table-cell {
+    -fx-text-fill: #F44336 !important;
+}
+
+.warning-row .table-cell {
+    -fx-text-fill: #FF9800 !important;
+}
+
+/* Анимация для текущего шага */
+@keyframes pulse {
+    0% { -fx-scale-x: 1; -fx-scale-y: 1; }
+    50% { -fx-scale-x: 1.05; -fx-scale-y: 1.05; }
+    100% { -fx-scale-x: 1; -fx-scale-y: 1; }
+}
+
+.pulse-animation {
+    -fx-animation: pulse 1s infinite;
+}
+
+/* Стили для кнопок */
+.secondary-button {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+}
+
+/* Подсказки */
+.hint-text {
+    -fx-text-fill: #888;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+}
+
+/* Полоса прокрутки для таблицы */
+.results-table .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.results-table .scroll-bar:vertical .track {
+    -fx-background-color: #1a1a1a;
+}
+
+.results-table .scroll-bar:vertical .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+}
+
+.results-table .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #555;
+}
+
+/* Адаптивность для мобильных устройств (если нужно) */
+@media (max-width: 768px) {
+    .simulation-controls {
+        -fx-spacing: 10px;
+    }
+
+    .control-button {
+        -fx-min-width: 80px;
+        -fx-padding: 8px 12px;
+        -fx-font-size: 12px;
+    }
+
+    .speed-slider {
+        -fx-pref-width: 150px;
+    }
+}
+
+/* Табличная панель */
+.table-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Скрыть границу ScrollPane */
+.table-scroll-pane, .table-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Стилизация скроллбара */
+.table-scroll-pane .scroll-bar:vertical,
+.table-scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+/* Трек (фон) скроллбара */
+.table-scroll-pane .scroll-bar:vertical .track,
+.table-scroll-pane .scroll-bar:horizontal .track {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+/* Ползунок (thumb) скроллбара */
+.table-scroll-pane .scroll-bar:vertical .thumb,
+.table-scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+}
+
+/* Ползунок при наведении */
+.table-scroll-pane .scroll-bar:vertical .thumb:hover,
+.table-scroll-pane .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #555;
+}
+
+/* Ползунок при нажатии */
+.table-scroll-pane .scroll-bar:vertical .thumb:pressed,
+.table-scroll-pane .scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #666;
+}
+
+/* Кнопки вверх/вниз (стрелки) */
+.table-scroll-pane .scroll-bar:vertical .increment-button,
+.table-scroll-pane .scroll-bar:vertical .decrement-button,
+.table-scroll-pane .scroll-bar:horizontal .increment-button,
+.table-scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 2px;
+    -fx-border-color: transparent;
+}
+
+/* Стрелки */
+.table-scroll-pane .scroll-bar .increment-arrow,
+.table-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: #666;
+    -fx-padding: 3px;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.table-scroll-pane .scroll-bar:vertical .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z"; /* треугольник вниз */
+}
+
+.table-scroll-pane .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: "M 0 4 L 4 0 L 8 4 Z"; /* треугольник вверх */
+}
+
+.table-scroll-pane .scroll-bar:horizontal .increment-arrow {
+    -fx-shape: "M 0 0 L 4 4 L 0 8 Z"; /* треугольник вправо */
+}
+
+.table-scroll-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: "M 4 0 L 0 4 L 4 8 Z"; /* треугольник влево */
+}
+
+/* Стрелки при наведении */
+.table-scroll-pane .scroll-bar .increment-arrow:hover,
+.table-scroll-pane .scroll-bar .decrement-arrow:hover {
+    -fx-background-color: #888;
+}
+
+/* Уголок (corner) */
+.table-scroll-pane .corner {
+    -fx-background-color: #1a1a1a;
+}
+
+/* Контейнер таблицы с отступами */
+.table-container {
+    -fx-padding: 1px;
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #333;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.results-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.results-table .column-header .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+    visibility: hidden;
+}

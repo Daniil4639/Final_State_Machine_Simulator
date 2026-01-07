@@ -8,8 +8,6 @@ public interface MachineProcessInterface {
 
     void step(String input);
 
-    int getCurrentStep();
-
     String getLastResult();
 
     List<String> getAllResults();
@@ -27,4 +25,8 @@ public interface MachineProcessInterface {
     String getMachineName();
 
     Machine getMachine();
+
+    default int getTactNumber() {
+        return getAllConditionsFromHistory().size();
+    }
 }

@@ -10,8 +10,6 @@ public abstract class Machine {
 
     protected final static Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_]*");
 
-    protected final static Scanner sc = new Scanner(System.in);
-
     protected List<List<String>> conditionsMatrix;
 
     protected List<String> conditions;
@@ -59,6 +57,42 @@ public abstract class Machine {
         return startCondition;
     }
 
+    protected void checkConditionsList(List<String> conditions) {
+        if (conditions.isEmpty()) {
+            throw new WrongMachineParams("Список состояний не может быть пустым!");
+        }
+
+        conditions.forEach(elem -> {
+            if (!NAME_PATTERN.matcher(elem).matches()) {
+                throw new WrongMachineParams(String.format(
+                        """
+                        Состояние "%s" не соответствует формату ввода.
+                        Допустимые символы: a-z A-Z 0-9 _
+                        """,
+                        elem
+                ));
+            }
+        });
+    }
+
+    protected void checkInputsList(List<String> inputs) {
+        if (inputs.isEmpty()) {
+            throw new WrongMachineParams("Список входных сигналов не может быть пустым!");
+        }
+
+        inputs.forEach(elem -> {
+            if (!NAME_PATTERN.matcher(elem).matches()) {
+                throw new WrongMachineParams(String.format(
+                        """
+                        Входной сигнал "%s" не соответствует формату ввода.
+                        Допустимые символы: a-z A-Z 0-9 _
+                        """,
+                        elem
+                ));
+            }
+        });
+    }
+
     protected void checkConditionsMatrix(List<List<String>> conditionsMatrix,
                                        List<String> conditions,
                                        List<String> transitions) {
@@ -91,6 +125,10 @@ public abstract class Machine {
             }
 
             for (String condition: conditionsRow) {
+                if (condition.isEmpty()) {
+                    throw new WrongMachineParams("Целевое состояние не может быть пустым!");
+                }
+
                 if (!condition.equals("-") && !conditions.contains(condition)) {
                     wrongConditions.add(condition);
                 }
@@ -111,39 +149,6 @@ public abstract class Machine {
         }
     }
 
-    protected static boolean isElementNotMatches(String element) {
-        Matcher matcher = NAME_PATTERN.matcher(element);
-
-        if (!matcher.matches()) {
-            System.out.printf(
-                    """
-                    Элемент "%s" не подходит по формату.
-                    Допустимые символы: ['a' - 'z'], ['A' - 'z'], ['0' - '9'], '_'
-                    """,
-                    element
-            );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    protected static boolean isElementNotOnConditionsList(String element, List<String> conditions) {
-        if (!conditions.contains(element)) {
-            System.out.printf(
-                    """
-                    Элемент "%s" отсутствует в списке возможных состояний.
-                    """,
-                    element
-            );
-
-            return true;
-        }
-
-        return false;
-    }
-
     protected void checkStartCondition(List<String> conditions, String condition) {
         if (!conditions.contains(condition)) {
             throw new WrongMachineParams(String.format(
@@ -157,190 +162,4 @@ public abstract class Machine {
             ));
         }
     }
-
-    protected static List<String> createConditionsConsole() {
-        List<String> conditions;
-        System.out.println("\n---------------------------------------------------------------\n");
-
-        while (true) {
-            System.out.println("Введите через запятую список состояний (например: q0,q1,q2,q3):");
-            conditions = Arrays.stream(sc.nextLine()
-                            .replace(" ", "")
-                            .split(","))
-                    .toList();
-
-            boolean ok = true;
-
-            Set<String> conditionsSet = new HashSet<>();
-            for (String condition: conditions) {
-                if (!conditionsSet.add(condition)) {
-                    System.out.println("В списке возможных состояний не должно быть повторяющихся элементов!");
-                    ok = false;
-                    break;
-                }
-            }
-
-            if (!ok) {
-                continue;
-            }
-
-            for (String condition: conditions) {
-                if (isElementNotMatches(condition)) {
-                    ok = false;
-                    break;
-                }
-            }
-
-            if (ok) {
-                break;
-            }
-        }
-
-        return conditions;
-    }
-
-    protected static List<String> createTransitionsConsole() {
-        List<String> transitions;
-        System.out.println("\n---------------------------------------------------------------\n");
-
-        while (true) {
-            System.out.println("Введите через запятую список входных сигналов (например: x0,x1,x2,x3):");
-            transitions = Arrays.stream(sc.nextLine()
-                            .replace(" ", "")
-                            .split(","))
-                    .toList();
-
-            boolean ok = true;
-
-            Set<String> transitionsSet = new HashSet<>();
-            for (String transition: transitions) {
-                if (!transitionsSet.add(transition)) {
-                    System.out.println("В списке входных сигналов не должно быть повторяющихся элементов!");
-                    ok = false;
-                    break;
-                }
-            }
-
-            if (!ok) {
-                continue;
-            }
-
-            for (String transition: transitions) {
-                if (isElementNotMatches(transition)) {
-                    ok = false;
-                    break;
-                }
-            }
-
-            if (ok) {
-                break;
-            }
-        }
-
-        return transitions;
-    }
-    
-    protected static String createStartConditionConsole(List<String> conditions) {
-        String condition;
-        System.out.println("\n---------------------------------------------------------------\n");
-
-        while (true) {
-            System.out.println("Введите начальное состояние автомата (например: q0):");
-            condition = sc.nextLine();
-            
-            if (!conditions.contains(condition)) {
-                System.out.println("Введенное состояние отсутствует в списке возможных состояний!");
-            } else {
-                break;
-            }
-        }
-
-        return condition;
-    }
-
-    protected static List<List<String>> createConditionsMatrixConsole(List<String> conditions,
-                                                                      List<String> transitions) {
-
-        List<List<String>> conditionsMatrix = new ArrayList<>();
-        System.out.printf(CONDITIONS_MATRIX_HINT, conditions.size(), transitions.size());
-
-        for (int ind = 0; ind < transitions.size(); ind++) {
-            List<String> conditionsRow;
-
-            while (true) {
-                conditionsRow = Arrays.stream(sc.nextLine()
-                                .replace(" ", "")
-                                .split(","))
-                        .toList();
-
-                boolean ok = true;
-
-                if (conditionsRow.size() != conditions.size()) {
-                    System.out.printf(
-                            """
-                            Размер введенной строки: %d. Ожидаемый размер: %d.
-                            Введите строку матрицы повторно:
-                            """,
-                            conditionsRow.size(), conditions.size()
-                    );
-                    continue;
-                }
-
-                for (String condition: conditionsRow) {
-                    if (condition.equals("-")) {
-                        continue;
-                    }
-
-                    if (isElementNotMatches(condition) || isElementNotOnConditionsList(condition, conditions)) {
-                        System.out.println("Введите строку матрицы повторно:");
-                        ok = false;
-                        break;
-                    }
-                }
-
-                if (ok) {
-                    break;
-                }
-            }
-
-            conditionsMatrix.add(conditionsRow);
-        }
-
-        return conditionsMatrix;
-    }
-
-    public abstract String getMachineNamePrint();
-
-    public abstract List<String> getResultsList();
-
-    public abstract String getResultsPrint();
-
-    public abstract String getConditionsMatrixPrint();
-
-    private static final String CONDITIONS_MATRIX_HINT =
-            """
-            
-            ---------------------------------------------------------------
-            
-            Заполнение матрицы переходов!
-            Для каждого состояния и входного значения необходимо указать следующее состояние!
-            Использовать '-' в случае отсутствия перехода!
-            
-            Пример матрицы переходов:
-            
-                       │     q0     │     q1     │     q2     │
-              ─────────┼────────────┼────────────┼────────────┼
-                  x1   │     q0     │     q2     │     q1     │
-                  x2   │     q1     │      -     │     q0     │
-            
-            Пример ожидаемого ввода:
-            > q0,q2,q1
-            > q1,-,q0
-            
-            Ожидаемый размер вводимой матрицы на основе введенных ранее состояний и входных сигналов:
-            Ширина - %s
-            Высота - %s
-            
-            Ввод матрицы:
-            """;
 }

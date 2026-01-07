@@ -4,9 +4,9 @@
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="app.abstract_automaton_project.controllers.MainController">
+<VBox fx:id="anchorBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="app.abstract_automaton_project.controllers.MainController">
     <stylesheets>
-        <URL value="@styles/style.css" />
+        <URL value="@styles/main.css" />
     </stylesheets>
 
     <BorderPane styleClass="header" prefHeight="60">
@@ -25,11 +25,11 @@
             <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="right-toolbar">
                 <MenuButton text="Файл" styleClass="menu-button">
                     <items>
-                        <MenuItem styleClass="menu-item" text="Новый автомат"/>
-                        <MenuItem styleClass="menu-item" text="Открыть..."/>
-                        <MenuItem styleClass="menu-item" text="Сохранить"/>
+                        <MenuItem styleClass="menu-item" text="Новый автомат" onAction="#createNewAutomaton"/>
+                        <MenuItem styleClass="menu-item" text="Открыть..." onAction="#openAutomaton"/>
+                        <MenuItem styleClass="menu-item" text="Сохранить" onAction="#saveAutomaton"/>
                         <SeparatorMenuItem />
-                        <MenuItem styleClass="menu-item" text="Выход"/>
+                        <MenuItem styleClass="menu-item" text="Выход" onAction="#closeApp"/>
                     </items>
                 </MenuButton>
 

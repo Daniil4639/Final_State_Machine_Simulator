@@ -17,14 +17,11 @@ public class MealyProcess implements MachineProcessInterface {
 
     private final List<String> inputsHistory;
 
-    private int currentStep;
-
     public MealyProcess(MealyMachine mealyMachine) {
         this.mealyMachine = mealyMachine;
         this.results = new ArrayList<>();
         this.conditionsHistory = new ArrayList<>(List.of(this.mealyMachine.getStartCondition()));
         this.inputsHistory = new ArrayList<>();
-        this.currentStep = 0;
     }
 
     @Override
@@ -63,7 +60,6 @@ public class MealyProcess implements MachineProcessInterface {
                 .get(transitionIndex)
                 .get(conditionIndex);
 
-        currentStep += 1;
         conditionsHistory.add(nextCondition);
         results.add(nestResult);
         inputsHistory.add(input);
@@ -79,15 +75,10 @@ public class MealyProcess implements MachineProcessInterface {
                     Заданный переход невозможен. Отсутствует дальнейшее состояние в матрице переходов.
                     "%s" + "%s" -> "%s"
                     """,
-                    getCurrentStep(), input, nextCondition
+                    mealyMachine.getConditions().get(conditionIndex), input, nextCondition
             ));
         }
         return nextCondition;
-    }
-
-    @Override
-    public int getCurrentStep() {
-        return currentStep;
     }
 
     @Override
@@ -134,7 +125,6 @@ public class MealyProcess implements MachineProcessInterface {
         conditionsHistory.clear();
         conditionsHistory.add(mealyMachine.getStartCondition());
         inputsHistory.clear();
-        currentStep = 0;
     }
 
     @Override

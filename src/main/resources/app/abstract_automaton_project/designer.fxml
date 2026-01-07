@@ -92,8 +92,10 @@
                                styleClass="table-description"/>
 
                         <VBox styleClass="table-container">
-                            <TableView fx:id="transitionTable" styleClass="data-table">
-                            </TableView>
+                            <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="table-scroll-pane" hbarPolicy="NEVER">
+                                <TableView fx:id="transitionTable" styleClass="data-table">
+                                </TableView>
+                            </ScrollPane>
                         </VBox>
 
                         <Label text="Для изменения кликните дважды по ячейке" styleClass="hint-text"/>
@@ -108,8 +110,10 @@
                                styleClass="table-description"/>
 
                         <VBox styleClass="table-container">
-                            <TableView fx:id="outputTable" styleClass="data-table">
-                            </TableView>
+                            <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="table-scroll-pane" hbarPolicy="NEVER">
+                                <TableView fx:id="outputTable" styleClass="data-table">
+                                </TableView>
+                            </ScrollPane>
                         </VBox>
 
                         <Label text="Для изменения кликните дважды по ячейке" styleClass="hint-text"/>
@@ -134,10 +138,8 @@
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Button text="Очистить" styleClass="secondary-button"
                             onAction="#refreshAll"/>
-                    <Button text="Проверить корректность" styleClass="secondary-button"
+                    <Button text="Проверить корректность" styleClass="primary-button"
                             onAction="#validateAutomaton"/>
-                    <Button text="Перейти к симулятору" styleClass="primary-button"
-                            onAction="#goToSimulator"/>
                 </HBox>
             </right>
         </BorderPane>

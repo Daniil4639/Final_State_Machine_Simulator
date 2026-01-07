@@ -1,14 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="app.abstract_automaton_project.controllers.SimulatorController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+            fx:controller="app.abstract_automaton_project.controllers.SimulatorController" styleClass="simulator-root">
 
-</AnchorPane>
+    <stylesheets>
+        <URL value="@styles/simulator.css" />
+    </stylesheets>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ: Управление -->
+    <top>
+        <VBox styleClass="control-panel" spacing="10">
+            <!-- Информация об автомате -->
+            <HBox styleClass="automaton-info" spacing="20">
+                <VBox spacing="5">
+                    <Label text="Тип автомата:" styleClass="info-label"/>
+                    <Label fx:id="automatonTypeLabel" text="Автомат Мили" styleClass="info-value"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="Состояний:" styleClass="info-label"/>
+                    <Label fx:id="statesCountLabel" text="0" styleClass="info-value"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="Текущее состояние:" styleClass="info-label"/>
+                    <Label fx:id="currentStateLabel" text="—" styleClass="info-value"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="Такт:" styleClass="info-label"/>
+                    <Label fx:id="stepLabel" text="1" styleClass="info-value"/>
+                </VBox>
+            </HBox>
+
+            <!-- Панель ввода последовательности -->
+            <VBox styleClass="input-section" spacing="10">
+                <Label text="Входная последовательность" styleClass="section-title"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="inputSequenceField"
+                               promptText="Введите последовательность входных сигналов"
+                               HBox.hgrow="ALWAYS" styleClass="sequence-input"/>
+                </HBox>
+                <VBox spacing="5">
+                    <Label text="Можно вводить несколько через запятую: x0,x1,x2" styleClass="hint-text"/>
+                    <Label text="Допустимые символы: a-z A-Z 0-9 _ ," styleClass="hint-text"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </top>
+
+    <!-- ЦЕНТРАЛЬНАЯ ПАНЕЛЬ: Управление и таблица -->
+    <center>
+        <VBox spacing="20" styleClass="main-content">
+
+            <!-- Панель управления симуляцией -->
+            <HBox styleClass="simulation-controls" spacing="15" alignment="CENTER">
+                <Button text="▶ Шаг" styleClass="secondary-button" onAction="#nextStep">
+                    <tooltip><Tooltip text="my tooltip" /></tooltip>
+                </Button>
+                <Button fx:id="autoRunButton" text="⚡ Запуск" styleClass="secondary-button"
+                        onAction="#run"/>
+
+                <Separator orientation="VERTICAL" styleClass="vertical-separator"/>
+
+                <Button text="📋 Экспорт" styleClass="secondary-button" onAction="#exportResults"/>
+                <Button text="🗑️ Очистить" styleClass="secondary-button" onAction="#clearResults"/>
+            </HBox>
+
+            <!-- Таблица результатов симуляции -->
+            <VBox styleClass="results-section" spacing="10">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Результаты симуляции" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                </HBox>
+
+                <VBox styleClass="table-container">
+                    <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="table-scroll-pane" hbarPolicy="NEVER">
+                        <TableView fx:id="resultsTable" styleClass="results-table">
+                        </TableView>
+                    </ScrollPane>
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ: Статус и статистика -->
+    <bottom>
+        <BorderPane styleClass="status-panel">
+            <left>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Готов к симуляции" styleClass="status-text"/>
+                </HBox>
+            </left>
+            <right>
+                <HBox spacing="20" alignment="CENTER_RIGHT">
+                    <VBox spacing="2" alignment="CENTER_RIGHT">
+                        <Label text="Успешно:" styleClass="stat-label"/>
+                        <Label fx:id="successStepsLabel" text="0" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox spacing="2" alignment="CENTER_RIGHT">
+                        <Label text="Ошибки:" styleClass="stat-label"/>
+                        <Label fx:id="errorStepsLabel" text="0" styleClass="stat-value"/>
+                    </VBox>
+                </HBox>
+            </right>
+            <padding>
+                <Insets top="10" bottom="10" left="20" right="20"/>
+            </padding>
+        </BorderPane>
+    </bottom>
+
+</BorderPane>

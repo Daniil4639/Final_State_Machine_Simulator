@@ -1,8 +1,13 @@
 package app.abstract_automaton_project.controllers;
 
+import app.abstract_automaton_project.exceptions.WrongMachineParams;
+import app.abstract_automaton_project.machines.Machine;
+import app.abstract_automaton_project.machines.MealyMachine;
+import app.abstract_automaton_project.machines.MoorMachine;
 import app.abstract_automaton_project.tables.OutputMealyModel;
 import app.abstract_automaton_project.tables.TransitionModel;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -19,8 +24,22 @@ import java.util.stream.Stream;
 
 public class DesignerController {
 
+    private Machine machine;
+
+    private SimulatorController simulatorController;
+
+    public void setSimulatorController(SimulatorController simulatorController) {
+        this.simulatorController = simulatorController;
+    }
+
+    public void recompileMachineProcessEvent() {
+        simulatorController.setMachine(machine);
+    }
+
     @FXML
     public void initialize() {
+        machine = null;
+
         setupListView(statesListView);
         setupListView(inputsListView);
         setupListView(outputsListView);
@@ -33,28 +52,113 @@ public class DesignerController {
             initialStateCombo.getItems().clear();
             initialStateCombo.getItems().addAll(change.getList());
 
+            changeSuccessIndicator(false);
             updateTransitionsTable();
             updateOutputsTable();
         });
 
         inputsListView.getItems().addListener((ListChangeListener<String>) change -> {
+            changeSuccessIndicator(false);
             updateTransitionsTable();
             updateOutputsTable();
         });
 
+        outputsListView.getItems().addListener((ListChangeListener<String>) change -> {
+            changeSuccessIndicator(false);
+        });
+
+        initialStateCombo.getSelectionModel().selectedItemProperty().addListener(
+                (_, _, _) -> {
+                    changeSuccessIndicator(false);
+        });
+
         transitionTable.setEditable(true);
         outputTable.setEditable(true);
+
+        updateOutputsTable();
+        updateTransitionsTable();
+    }
+
+    public Machine getMachine() {
+        return machine;
+    }
+
+    public void setMachineProcess(Machine machine) {
+        refreshAll();
+
+        statesListView.getItems().addAll(machine.getConditions());
+        inputsListView.getItems().addAll(machine.getTransitions());
+        initialStateCombo.getSelectionModel().select(machine.getStartCondition());
+
+        transitionTable.getItems().clear();
+        List<TransitionModel> newTransitions = new ArrayList<>();
+        for (int inputIndex = 0; inputIndex < machine.getTransitions().size(); inputIndex++) {
+            TransitionModel model = new TransitionModel(machine.getTransitions().get(inputIndex));
+            for (int stateIndex = 0; stateIndex < machine.getConditions().size(); stateIndex++) {
+                model.getTransitions().put(
+                        machine.getConditions().get(stateIndex),
+                        new SimpleStringProperty(machine.getConditionsMatrix().get(inputIndex).get(stateIndex))
+                );
+            }
+            newTransitions.add(model);
+        }
+        transitionTable.getItems().addAll(newTransitions);
+
+        if (machine instanceof MealyMachine mealyMachine) {
+            mealyRadio.fire();
+
+            outputTable.getItems().clear();
+            List<OutputMealyModel> newOutputs = new ArrayList<>();
+            for (int inputIndex = 0; inputIndex < machine.getTransitions().size(); inputIndex++) {
+                OutputMealyModel model = new OutputMealyModel(machine.getTransitions().get(inputIndex));
+                for (int stateIndex = 0; stateIndex < machine.getConditions().size(); stateIndex++) {
+                    model.getOutputs().put(
+                            machine.getConditions().get(stateIndex),
+                            new SimpleStringProperty(mealyMachine.getResultsMatrix().get(inputIndex).get(stateIndex))
+                    );
+                }
+                newOutputs.add(model);
+            }
+            outputTable.getItems().addAll(newOutputs);
+        } else {
+            MoorMachine moorMachine = (MoorMachine) machine;
+            moorRadio.fire();
+
+            outputsListView.getItems().addAll(moorMachine.getResults());
+        }
+
+        validateAutomaton();
+    }
+
+    public void changeSuccessIndicator(boolean ready) {
+        if (ready) {
+            statusLabel.setText("Готов к работе");
+        } else {
+            statusLabel.setText("Не готов к работе");
+            machine = null;
+        }
     }
 
     public void showErrorMessage(String message) {
         Notifications.create()
                 .title("Ошибка")
                 .text(message)
-                .hideAfter(Duration.seconds(3))
+                .hideAfter(Duration.seconds(5))
                 .owner(rootPane.getScene().getWindow())
                 .position(Pos.TOP_RIGHT)
                 .darkStyle()
                 .showError();
+    }
+
+    public void showSuccessMessage(String message) {
+        Notifications.create()
+                .title("Успех")
+                .text(message)
+                .hideAfter(Duration.seconds(5))
+                .owner(rootPane.getScene().getWindow())
+                .position(Pos.TOP_RIGHT)
+                .darkStyle()
+                .showInformation();
     }
 
     @FXML
@@ -71,6 +175,8 @@ public class DesignerController {
 
             mealyOutputTab.setDisable(true);
         }
+
+        changeSuccessIndicator(false);
     }
 
     @FXML
@@ -131,10 +237,11 @@ public class DesignerController {
         }
 
         outputsListView.getItems().addAll(outputs);
+        changeSuccessIndicator(false);
     }
 
     @FXML
-    private void refreshAll() {
+    public void refreshAll() {
         statesListView.getItems().clear();
         newStateField.setText("");
 
@@ -145,16 +252,62 @@ public class DesignerController {
         outputsField.setText("");
 
         initialStateCombo.getItems().clear();
+        changeSuccessIndicator(false);
     }
 
     @FXML
     private void validateAutomaton() {
+        String machineId = ((RadioButton) automatonTypeGroup.getSelectedToggle()).getId();
+        List<String> states = statesListView.getItems();
+        List<String> inputs = inputsListView.getItems();
+        List<String> outputsMoor = outputsListView.getItems();
+        String startState = initialStateCombo.getValue();
 
-    }
+        List<List<String>> transitionsMatrix = new ArrayList<>();
+        for (TransitionModel model: transitionTable.getItems()) {
+            List<String> row = new ArrayList<>();
+            for (String state: states) {
+                StringProperty property = model.getTransitions().get(state);
+                if (property != null) {
+                    row.add(property.get());
+                }
+            }
+            transitionsMatrix.add(row);
+        }
 
-    @FXML
-    private void goToSimulator() {
+        List<List<String>> outputsMealyMatrix = new ArrayList<>();
+        for (OutputMealyModel model: outputTable.getItems()) {
+            List<String> row = new ArrayList<>();
+            for (String state: states) {
+                StringProperty property = model.getOutputs().get(state);
+                if (property != null) {
+                    row.add(property.get());
+                }
+            }
+            outputsMealyMatrix.add(row);
+        }
 
+        try {
+            if (machineId.equals("mealyRadio")) {
+                MealyMachine machine = new MealyMachine();
+                machine.setParams(transitionsMatrix, outputsMealyMatrix,
+                        states, inputs, startState);
+
+                this.machine = machine;
+            } else {
+                MoorMachine machine = new MoorMachine();
+                machine.setParams(transitionsMatrix, outputsMoor,
+                        states, inputs, startState);
+
+                this.machine = machine;
+            }
+
+            changeSuccessIndicator(true);
+            showSuccessMessage("Введенные параметры корректны.\nСистема готова к моделированию.");
+            recompileMachineProcessEvent();
+        } catch (WrongMachineParams ex) {
+            showErrorMessage(ex.getMessage());
+        }
     }
 
     private void updateOutputsTable() {
@@ -167,7 +320,7 @@ public class DesignerController {
                 param -> param.getValue().getInput());
         inputColumn.setSortable(false);
         inputColumn.setResizable(false);
-        inputColumn.setPrefWidth(80);
+        inputColumn.setPrefWidth(100);
         inputColumn.setStyle("-fx-alignment: CENTER;");
 
         outputTable.getColumns().add(inputColumn);
@@ -226,7 +379,7 @@ public class DesignerController {
                 param -> param.getValue().getInput());
         inputColumn.setSortable(false);
         inputColumn.setResizable(false);
-        inputColumn.setPrefWidth(80);
+        inputColumn.setPrefWidth(100);
         inputColumn.setStyle("-fx-alignment: CENTER;");
 
         transitionTable.getColumns().add(inputColumn);
@@ -288,6 +441,8 @@ public class DesignerController {
         });
 
         outputColumn.setOnEditCommit(event -> {
+            changeSuccessIndicator(false);
+
             int row = event.getTablePosition().getRow();
             String stateName = event.getTablePosition().getTableColumn().getText();
             String newValue = event.getNewValue();
@@ -325,6 +480,8 @@ public class DesignerController {
         });
 
         stateColumn.setOnEditCommit(event -> {
+            changeSuccessIndicator(false);
+
             int row = event.getTablePosition().getRow();
             String stateName = event.getTablePosition().getTableColumn().getText();
             String newValue = event.getNewValue();
@@ -437,6 +594,12 @@ public class DesignerController {
 
     @FXML
     private TextField outputsField;
+
+    @FXML
+    private RadioButton mealyRadio;
+
+    @FXML
+    private RadioButton moorRadio;
 
     @FXML
     private ComboBox<String> initialStateCombo;
