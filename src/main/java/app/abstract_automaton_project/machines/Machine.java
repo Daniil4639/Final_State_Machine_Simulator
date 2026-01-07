@@ -162,4 +162,12 @@ public abstract class Machine {
             ));
         }
     }
+
+    public abstract String getMachineNamePrint();
+
+    public abstract List<String> getResultsList();
+
+    public abstract String getResultsPrint();
+
+    public abstract String getConditionsMatrixPrint();
 }

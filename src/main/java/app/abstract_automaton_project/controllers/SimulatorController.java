@@ -93,8 +93,6 @@ public class SimulatorController {
             outputs.add("");
         }
 
-        System.out.print(states);
-
         resultsTable.getItems().addAll(List.of(inputs, states, outputs));
     }
 

@@ -20,7 +20,10 @@ public class MachineFileTransformer {
     private final static Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_]*");
 
     public static void saveProcessResultsToFile(MachineProcessInterface process, Path filepath) {
-        save(filepath, VisualTransformer.getResultsDescription(process));
+        save(filepath,
+                VisualTransformer.getMachineDescription(process.getMachine()) +
+                        System.lineSeparator().repeat(2) +
+                        VisualTransformer.getResultsDescription(process));
     }
 
     public static Machine getMachineFromFile(Path filePath) {
